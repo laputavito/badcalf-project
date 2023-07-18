@@ -77,3 +77,6 @@ agg_counts[:10]
 
 indexer = agg_counts.sum(1).argsort()
 indexer[:10]
+
+count_subset = agg_counts.take(indexer)[-10:]
+count_subset
