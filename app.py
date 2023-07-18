@@ -45,3 +45,35 @@ import pandas as pd
 frame = DataFrame(records)
 frame.info()
 
+tz_counts = frame['tz'].value_counts()
+tz_counts[:10]
+
+clean_tz = frame['tz'].fillna('Missing')
+clean_tz[clean_tz == ''] = 'Unknown'
+tz_counts = clean_tz.value_counts()
+tz_counts[:10]
+
+%matplotlib inline
+tz_counts[:10].plot(kind='barh', rot=0)
+
+frame['a'][1]
+frame['a'][50]
+frame['a'][51]
+
+results = Series([x.split()[0] for x in frame.a.dropna()])
+results[:5]
+
+results.value_counts()[:8]
+
+cframe = frame[frame.a.notnull()]
+import numpy as np
+operating_system = np.where(cframe['a'].str.contains('Windows'),
+                            'Windows', 'Not Windows')
+operating_system[:5]
+
+by_tz_os = cframe.groupby(['tz', operating_system])
+agg_counts = by_tz_os.size().unstack().fillna(0)
+agg_counts[:10]
+
+indexer = agg_counts.sum(1).argsort()
+indexer[:10]
